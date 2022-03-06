@@ -34,7 +34,9 @@ func InitTableByName(tableName string) string {
 		UserId varchar(20),
 		time varchar(20),
 		isLucky tinyint(1),
-		Money int);
+		Money int,
+		MoneyId varchar(20)
+		);
 		`
 	}
 	return sql
@@ -55,11 +57,12 @@ func InsertData(tableName string, mapData map[string]interface{}) bool {
 		)
 	} else {
 		sql = fmt.Sprintf(
-			"insert into user(UserId, isLucky, time, Money) values ('%s', %v, '%s', %d);",
+			"insert into user(UserId, isLucky, time, Money, MoneyId) values ('%s', %v, '%s', %d, '%s');",
 			mapData["UserId"].(string),
 			mapData["isLucky"].(bool),
 			mapData["time"].(string),
 			mapData["Money"].(int),
+			mapData["MoneyId"].(string),
 		)
 	}
 	if msg, err := DB.Exec(sql); err != nil {
@@ -69,5 +72,26 @@ func InsertData(tableName string, mapData map[string]interface{}) bool {
 		log.Println("insert data success, the msg is ", msg)
 		return true
 	}
+}
+
+// 查询user表中MoneyId对应的所有isLucky为true的userId:Money键值对
+func FindUserData(MoneyId string) (res map[string]int) {
+	res = make(map[string]int)
+	var (
+		UserId string
+		Money int
+	)
+	sql := fmt.Sprintf(`select UserId, Money from user where MoneyId = '%s' and isLucky = 1`, MoneyId)
+	rows, err := DB.Query(sql)
+	defer rows.Close()
+	if err != nil {
+		log.Println("查询数据失败")
+		return nil
+	}
+	for rows.Next() {
+		rows.Scan(&UserId, &Money)
+		res[UserId] = Money
+	}
+	return
 
 }

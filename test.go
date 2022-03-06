@@ -1,36 +1,27 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"strconv"
+	"reflect"
 	"time"
 )
 
-func Do(id int) {
-	url := "http://127.0.0.1:8080/get?uid=" + strconv.Itoa(id)
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println("id is ", id, " --- ", string(body))
+func main() {
+	m := make(map[string]int)
+	fmt.Println(reflect.TypeOf(m))
 }
 
-func main() {
-	resp, err := http.Get("http://127.0.0.1:8080/set?num=10&total=100")
-	if err != nil {
-		fmt.Println(err)
-		return
+// 单独的监控协程
+func watch(ctx context.Context, name string) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println(name, "收到信号，监控退出,time=", time.Now().Unix())
+			return
+		default:
+			fmt.Println(name, "goroutine监控中,time=", time.Now().Unix())
+			time.Sleep(1 * time.Second)
+		}
 	}
-	time.Sleep(time.Duration(2)*time.Second)
-	for i := 0; i < 100; i++ {
-		go Do(i)
-	}
-	time.Sleep(time.Duration(5)*time.Second)
-	defer resp.Body.Close()
-
 }
