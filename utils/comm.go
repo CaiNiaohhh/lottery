@@ -26,6 +26,7 @@ var (
 	packageList []int
 	userCh chan string
 	userList map[string]bool
+	moneyId string
 )
 
 //Db数据库连接池
@@ -49,13 +50,14 @@ func InitDB() {
 	fmt.Println("connnect success")
 
 	// 初始化
-	if msg, err := DB.Exec(InitTableByName("money")); err != nil{
+
+	if msg, err := DB.Exec(InitTableByName("money")); err != nil{ // ignore_security_alert;
 		fmt.Printf("error is %s\n", err)
 	} else {
 		fmt.Printf("create table money success, Msg is %v\n", msg)
 	}
 
-	if msg, err := DB.Exec(InitTableByName("user")); err != nil{
+	if msg, err := DB.Exec(InitTableByName("user")); err != nil{ // ignore_security_alert;
 		fmt.Printf("error is %s\n", err)
 	} else {
 		fmt.Printf("create table user success, Msg is %v\n", msg)
@@ -81,6 +83,7 @@ func Set(ctx *gin.Context) {
 			"msg": "参数错误",
 			"data": "nil",
 		})
+		return
 	}
 	// 定义一个红包分发通道
 	userCh = make(chan string, 1)
@@ -92,7 +95,7 @@ func Set(ctx *gin.Context) {
 	//log.Println("Now", now)
 
 	tmp := md5.Sum([]byte(now))
-	moneyId := hex.EncodeToString(tmp[:])[:20]
+	moneyId = hex.EncodeToString(tmp[:])[:20]
 
 	// 创建一个map来存储数据
 	insertData := map[string]interface{}{
@@ -157,6 +160,7 @@ func Get(ctx *gin.Context) {
 			"msg": "参数错误",
 			"data": "nil",
 		})
+		return
 	}
 	userCh <- user.Uid
 	money := 0
@@ -187,6 +191,7 @@ func Get(ctx *gin.Context) {
 		"isLucky": isLucky,
 		"time": now,
 		"Money": money,
+		"MoneyId": moneyId,
 	}
 	// 将数据写入数据库
 	if InsertData("user", insertData) {
