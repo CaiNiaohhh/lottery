@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	. "lottry/utils"
 	"time"
-	. "utils/comm/utils"
 )
 
 func main() {

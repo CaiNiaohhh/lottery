@@ -8,30 +8,27 @@ func lengthOfLongestSubstring(s string) int {
 	}
 	// 定义两个指针和一个map
 	st, en, maxLen := 0, 1, 1
-	Map := make(map[byte]int)
-	// Map := map[byte]bool{}
-	Map[s[st]] = 1
+	Map := make(map[byte]bool)
+	Map[s[st]] = true
 	for en < length {
-		if _, ok := Map[s[en]]; ok && Map[s[en]] > 0 {
-			for st <= en && Map[s[en]] > 0 {
-				Map[s[st]] -= 1
+		if _, ok := Map[s[en]]; ok {
+			for st <= en && Map[s[en]] {
+				delete(Map, s[st])
 				st += 1
 			}
-			Map[s[en]] += 1
+			Map[s[en]] = true
 		} else {
-			Map[s[en]] += 1
-			maxLen = Max(maxLen, (en - st + 1))
+			Map[s[en]] = true
+			maxLen = Max(maxLen, en - st + 1)
 		}
 		en += 1
 	}
 	return maxLen
 }
 
-func Max(x int, y int) (z int) {
+func Max(x, y int) int {
 	if x > y {
-		z = x
-	} else {
-		z = y
+		return x
 	}
-	return z
+	return y
 }

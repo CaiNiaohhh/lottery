@@ -5,7 +5,7 @@ package main
 输出：4
 */
 
-func search(nums []int, target int) int {
+func _search(nums []int, target int) int {
 	if nums == nil || len(nums) == 0 {
 		return -1
 	}
