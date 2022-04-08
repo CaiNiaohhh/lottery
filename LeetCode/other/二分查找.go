@@ -1,4 +1,4 @@
-package main
+package other
 
 /*
 给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，

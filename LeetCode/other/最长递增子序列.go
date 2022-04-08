@@ -1,4 +1,4 @@
-package main
+package other
 
 func lengthOfLIS(nums []int) int {
 

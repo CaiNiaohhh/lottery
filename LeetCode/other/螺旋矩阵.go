@@ -1,4 +1,4 @@
-package main
+package other
 
 func spiralOrder(matrix [][]int) []int {
 	if matrix == nil || len(matrix) == 0 {

@@ -1,4 +1,4 @@
-package main
+package other
 func longestPalindrome(s string) string {
 	if len(s) < 2 {
 		return s

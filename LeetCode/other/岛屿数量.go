@@ -1,4 +1,4 @@
-package main
+package other
 
 // 岛屿数量，经典的dfs
 

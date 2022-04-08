@@ -1,4 +1,4 @@
-package main
+package other
 
 // 回溯法
 

@@ -1,4 +1,4 @@
-package main
+package other
 
 // 使用双栈实现队列
 // 使用切片模拟stack，具体是后进先出，始终操作最后一个元素
