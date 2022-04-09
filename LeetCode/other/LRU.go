@@ -1,4 +1,4 @@
-package other
+package main
 
 /*
 请你设计并实现一个满足  LRU (最近最少使用) 缓存 约束的数据结构。

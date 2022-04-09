@@ -1,4 +1,4 @@
-package other
+package main
 
 func lengthOfLongestSubstring(s string) int {
 	// 特判

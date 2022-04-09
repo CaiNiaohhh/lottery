@@ -1,4 +1,4 @@
-package other
+package main
 func isValid(s string) bool {
 	n := len(s)
 	if n % 2 == 1 {

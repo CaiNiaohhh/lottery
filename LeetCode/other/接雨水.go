@@ -1,4 +1,4 @@
-package other
+package main
 
 // 左边最大的和右边最大的取小的一方减去当前值
 
