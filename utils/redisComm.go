@@ -89,11 +89,19 @@ func mapToString(Data map[string]int) (res string) {
 
 // 定期刷新redis中的key值，和MySQL对齐
 func SyncRedisAndMysql(duration time.Duration) {
+
+	// 先捕获异常
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("SyncRedisAndMysql error")
+		}
+	}()
+	log.Printf("**in**")
 	var cursor uint64
 	ctx := context.Background()
 	for {
 		if keys, _, err := rdb.Scan(ctx, cursor, "*", 10).Result(); err != nil {
-			panic(err)
+			panic("redis scan error")
 		} else {
 			for _, key := range keys {
 				mysqlVal := FindUserData(key)
